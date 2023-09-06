@@ -41,11 +41,6 @@ public class MainActivity extends AppCompatActivity {
         binding.smsRecyclerView.setAdapter(adapter);
         binding.smsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        SmsReceiver smsReceiver = new SmsReceiver(adapter);
-
-        IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-        registerReceiver(smsReceiver, filter);
-
 
         if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.RECEIVE_SMS") != PackageManager.PERMISSION_GRANTED) {
@@ -59,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
 
             readSMS();
         }
+
+//        SmsReceiver smsReceiver = new SmsReceiver(adapter);
+//
+//        IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+//        registerReceiver(smsReceiver, filter);
 
 
     }

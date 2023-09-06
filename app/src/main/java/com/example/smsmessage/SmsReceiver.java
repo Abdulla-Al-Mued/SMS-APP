@@ -12,8 +12,10 @@ public class SmsReceiver extends BroadcastReceiver {
 
     private MessageAdapter adapter;
 
-    public SmsReceiver(MessageAdapter adapter) {
-        this.adapter = adapter;
+//    public SmsReceiver(MessageAdapter adapter) {
+//        this.adapter = adapter;
+//    }
+    public SmsReceiver() {
     }
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -36,8 +38,8 @@ public class SmsReceiver extends BroadcastReceiver {
                     String toastText = "Message: " + message;
                     Toast.makeText(context, toastText, Toast.LENGTH_LONG).show();
 
-                    com.example.smsmessage.SmsMessage sms = new com.example.smsmessage.SmsMessage(sender, message, date);
-                    adapter.addMessage(sms);
+//                    com.example.smsmessage.SmsMessage sms = new com.example.smsmessage.SmsMessage(sender, message, date);
+//                    adapter.addMessage(sms);
                 }
             }
         }
