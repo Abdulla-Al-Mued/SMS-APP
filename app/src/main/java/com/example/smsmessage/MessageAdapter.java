@@ -24,14 +24,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         this.context = context;
     }
 
-//    public MessageAdapter() {
-//    }
-//
-//    public void addMessage(SmsMessage message) {
-//        smsList.add(message);
-//        notifyItemInserted(smsList.size() - 1);
-//    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

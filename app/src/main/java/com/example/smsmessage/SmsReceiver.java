@@ -10,11 +10,6 @@ import android.widget.Toast;
 
 public class SmsReceiver extends BroadcastReceiver {
 
-    private MessageAdapter adapter;
-
-//    public SmsReceiver(MessageAdapter adapter) {
-//        this.adapter = adapter;
-//    }
     public SmsReceiver() {
     }
     @Override
@@ -29,17 +24,15 @@ public class SmsReceiver extends BroadcastReceiver {
                 for (Object pdu : pdus) {
                     android.telephony.SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) pdu);
 
-                    // Get the sender's phone number and message body
                     String sender = smsMessage.getDisplayOriginatingAddress();
                     String message = smsMessage.getMessageBody();
                     String date = String.valueOf(smsMessage.getTimestampMillis());
 
-                    // Display a Toast with the sender and message
                     String toastText = "Message: " + message;
                     Toast.makeText(context, toastText, Toast.LENGTH_LONG).show();
 
-//                    com.example.smsmessage.SmsMessage sms = new com.example.smsmessage.SmsMessage(sender, message, date);
-//                    adapter.addMessage(sms);
+                    com.example.smsmessage.SmsMessage sms = new com.example.smsmessage.SmsMessage(sender, message, date);
+                    MainActivity.getInstance().readSMS();
                 }
             }
         }

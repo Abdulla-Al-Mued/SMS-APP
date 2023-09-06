@@ -1,20 +1,18 @@
 package com.example.smsmessage;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.smsmessage.databinding.ActivityMainBinding;
 
@@ -25,15 +23,17 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private final int REQUEST_CODE_ASK_PERMISSIONS = 123;
-    private MessageAdapter adapter;
-
-    private List<SmsMessage> smsList;
+    private static MessageAdapter adapter;
+    private static MainActivity instance;
+    private static List<SmsMessage> smsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        instance = this;
 
         smsList = new ArrayList<>();
 
@@ -55,15 +55,14 @@ public class MainActivity extends AppCompatActivity {
             readSMS();
         }
 
-//        SmsReceiver smsReceiver = new SmsReceiver(adapter);
-//
-//        IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-//        registerReceiver(smsReceiver, filter);
-
 
     }
 
-    private void readSMS() {
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
+    public void readSMS() {
 
         Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
 
@@ -91,15 +90,14 @@ public class MainActivity extends AppCompatActivity {
             if (!smsList.isEmpty()){
                 smsList.clear();
             }
-            else {
-                smsList.addAll(smsList1);
-            }
+            smsList.addAll(smsList1);
 
             adapter.notifyDataSetChanged();
 
         }
 
     }
+
 
 
     @Override
