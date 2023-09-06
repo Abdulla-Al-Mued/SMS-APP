@@ -10,7 +10,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="5dp"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/color23"
         app:cardCornerRadius="7dp"
         >
 
@@ -58,6 +58,7 @@
                     android:layout_height="wrap_content"
                     android:text="Leave Application efa afds asdf adsf  adsf "
                     android:textColor="@color/color19"
+                    android:layout_marginTop="5dp"
                     android:textSize="12dp" />
 
             </LinearLayout>
@@ -72,7 +73,6 @@
 
             <TextView
                 android:id="@+id/itemDate"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"

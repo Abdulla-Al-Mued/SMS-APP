@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smsmessage.databinding.ItemSmsMessageBinding;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
@@ -19,6 +22,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public MessageAdapter(List<SmsMessage> smsList, Context context) {
         this.smsList = smsList;
         this.context = context;
+    }
+
+    public void addMessage(SmsMessage message) {
+        smsList.add(message);
+        notifyItemInserted(smsList.size() - 1);
     }
 
     @NonNull
@@ -33,7 +41,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         SmsMessage sms = smsList.get(position);
         holder.binding.smsTitle.setText(sms.getSender());
         holder.binding.details.setText(sms.getMessage());
-        //holder.binding.itemDate.setText(sms.getDate());
+        holder.binding.itemDate.setText(getTimeByMillisecond(sms.getDate()));
     }
 
     @Override
@@ -48,5 +56,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             super(smsBinding.getRoot());
             binding = smsBinding;
         }
+    }
+
+    public String getTimeByMillisecond(String time) {
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        long milliSeconds= Long.parseLong(time);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+
+        return formatter.format(calendar.getTime());
     }
 }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -40,31 +41,26 @@ public class MainActivity extends AppCompatActivity {
         binding.smsRecyclerView.setAdapter(adapter);
         binding.smsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted, request it
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{"android.permission.READ_SMS"}, REQUEST_CODE_ASK_PERMISSIONS);
+        SmsReceiver smsReceiver = new SmsReceiver(adapter);
 
-        }
-        else {
-            // Permission is already granted, proceed with reading SMS
+        IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+        registerReceiver(smsReceiver, filter);
+
+
+        if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.RECEIVE_SMS") != PackageManager.PERMISSION_GRANTED) {
+
+
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                    "android.permission.READ_SMS",
+                    "android.permission.RECEIVE_SMS"
+            }, REQUEST_CODE_ASK_PERMISSIONS);
+        } else {
+
             readSMS();
         }
 
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == REQUEST_CODE_ASK_PERMISSIONS) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, proceed with reading SMS
-                readSMS();
-            } else {
-                Toast.makeText(this, "permission denied", Toast.LENGTH_SHORT).show();
-                // Permission denied, handle accordingly (e.g., show a message to the user)
-            }
-        }
     }
 
     private void readSMS() {
@@ -101,11 +97,25 @@ public class MainActivity extends AppCompatActivity {
 
             adapter.notifyDataSetChanged();
 
-
-            // Now you have a list of SMS messages in smsList
-            // You can pass this list to your RecyclerView adapter
-            // and display them in the RecyclerView.
         }
 
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_CODE_ASK_PERMISSIONS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                readSMS();
+
+            } else {
+
+                Toast.makeText(this, "permission denied", Toast.LENGTH_SHORT).show();
+
+            }
+        }
     }
 }
